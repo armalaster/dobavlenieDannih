@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Jyrnal">
+    <Key>
+      <PropertyRef Name="IDJyrnala" />
+    </Key>
+    <Property Name="IDJyrnala" Type="Int32" Nullable="false" />
+    <Property Name="KodPridmeta" Type="Int32" Nullable="false" />
+    <Property Name="NumTeacher" Type="Int32" Nullable="false" />
+    <Property Name="KodYchenika" Type="Int32" Nullable="false" />
+    <Property Name="Ocenka" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Pridmet" Relationship="Self.Jyrnal_fk0" FromRole="Jyrnal" ToRole="Pridmet" />
+    <NavigationProperty Name="Teacher" Relationship="Self.Jyrnal_fk1" FromRole="Jyrnal" ToRole="Teacher" />
+    <NavigationProperty Name="Ycheniki" Relationship="Self.Jyrnal_fk2" FromRole="Jyrnal" ToRole="Ycheniki" />
+  </EntityType>
+  <EntityType Name="Pridmet">
+    <Key>
+      <PropertyRef Name="KodPridmeta" />
+    </Key>
+    <Property Name="KodPridmeta" Type="Int32" Nullable="false" />
+    <Property Name="NamePridmeta" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="KodTeacher" Type="Int32" Nullable="false" />
+    <Property Name="NamTeacher" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Jyrnal" Relationship="Self.Jyrnal_fk0" FromRole="Pridmet" ToRole="Jyrnal" />
+    <NavigationProperty Name="Teacher" Relationship="Self.Pridmet_fk0" FromRole="Pridmet" ToRole="Teacher" />
+    <NavigationProperty Name="Raspisanie" Relationship="Self.Raspisanie_fk0" FromRole="Pridmet" ToRole="Raspisanie" />
+  </EntityType>
+  <EntityType Name="Raspisanie">
+    <Key>
+      <PropertyRef Name="NumCabinet" />
+    </Key>
+    <Property Name="NumCabinet" Type="Int32" Nullable="false" />
+    <Property Name="KodPridmeta" Type="Int32" Nullable="false" />
+    <Property Name="NumberTeacher" Type="Int32" Nullable="false" />
+    <Property Name="Fio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Pridmet" Relationship="Self.Raspisanie_fk0" FromRole="Raspisanie" ToRole="Pridmet" />
+    <NavigationProperty Name="Teacher" Relationship="Self.Raspisanie_fk1" FromRole="Raspisanie" ToRole="Teacher" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="NumTeacher" />
+    </Key>
+    <Property Name="NumTeacher" Type="Int32" Nullable="false" />
+    <Property Name="Fio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Jyrnal" Relationship="Self.Jyrnal_fk1" FromRole="Teacher" ToRole="Jyrnal" />
+    <NavigationProperty Name="Pridmet" Relationship="Self.Pridmet_fk0" FromRole="Teacher" ToRole="Pridmet" />
+    <NavigationProperty Name="Raspisanie" Relationship="Self.Raspisanie_fk1" FromRole="Teacher" ToRole="Raspisanie" />
+  </EntityType>
+  <EntityType Name="Ycheniki">
+    <Key>
+      <PropertyRef Name="KodYchenika" />
+    </Key>
+    <Property Name="KodYchenika" Type="Int32" Nullable="false" />
+    <Property Name="Fio_Ychenika" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NumPhone" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Adres" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NumKlass" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Jyrnal" Relationship="Self.Jyrnal_fk2" FromRole="Ycheniki" ToRole="Jyrnal" />
+  </EntityType>
+  <Association Name="Jyrnal_fk0">
+    <End Role="Pridmet" Type="Self.Pridmet" Multiplicity="1" />
+    <End Role="Jyrnal" Type="Self.Jyrnal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pridmet">
+        <PropertyRef Name="KodPridmeta" />
+      </Principal>
+      <Dependent Role="Jyrnal">
+        <PropertyRef Name="KodPridmeta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Jyrnal_fk1">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Jyrnal" Type="Self.Jyrnal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="NumTeacher" />
+      </Principal>
+      <Dependent Role="Jyrnal">
+        <PropertyRef Name="NumTeacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Jyrnal_fk2">
+    <End Role="Ycheniki" Type="Self.Ycheniki" Multiplicity="1" />
+    <End Role="Jyrnal" Type="Self.Jyrnal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ycheniki">
+        <PropertyRef Name="KodYchenika" />
+      </Principal>
+      <Dependent Role="Jyrnal">
+        <PropertyRef Name="KodYchenika" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Pridmet_fk0">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Pridmet" Type="Self.Pridmet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="NumTeacher" />
+      </Principal>
+      <Dependent Role="Pridmet">
+        <PropertyRef Name="KodTeacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Raspisanie_fk0">
+    <End Role="Pridmet" Type="Self.Pridmet" Multiplicity="1" />
+    <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pridmet">
+        <PropertyRef Name="KodPridmeta" />
+      </Principal>
+      <Dependent Role="Raspisanie">
+        <PropertyRef Name="KodPridmeta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Raspisanie_fk1">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+    <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="NumTeacher" />
+      </Principal>
+      <Dependent Role="Raspisanie">
+        <PropertyRef Name="NumberTeacher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Jyrnal" EntityType="Self.Jyrnal" />
+    <EntitySet Name="Pridmet" EntityType="Self.Pridmet" />
+    <EntitySet Name="Raspisanie" EntityType="Self.Raspisanie" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Teacher" EntityType="Self.Teacher" />
+    <EntitySet Name="Ycheniki" EntityType="Self.Ycheniki" />
+    <AssociationSet Name="Jyrnal_fk0" Association="Self.Jyrnal_fk0">
+      <End Role="Pridmet" EntitySet="Pridmet" />
+      <End Role="Jyrnal" EntitySet="Jyrnal" />
+    </AssociationSet>
+    <AssociationSet Name="Jyrnal_fk1" Association="Self.Jyrnal_fk1">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Jyrnal" EntitySet="Jyrnal" />
+    </AssociationSet>
+    <AssociationSet Name="Jyrnal_fk2" Association="Self.Jyrnal_fk2">
+      <End Role="Ycheniki" EntitySet="Ycheniki" />
+      <End Role="Jyrnal" EntitySet="Jyrnal" />
+    </AssociationSet>
+    <AssociationSet Name="Pridmet_fk0" Association="Self.Pridmet_fk0">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Pridmet" EntitySet="Pridmet" />
+    </AssociationSet>
+    <AssociationSet Name="Raspisanie_fk0" Association="Self.Raspisanie_fk0">
+      <End Role="Pridmet" EntitySet="Pridmet" />
+      <End Role="Raspisanie" EntitySet="Raspisanie" />
+    </AssociationSet>
+    <AssociationSet Name="Raspisanie_fk1" Association="Self.Raspisanie_fk1">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Raspisanie" EntitySet="Raspisanie" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
